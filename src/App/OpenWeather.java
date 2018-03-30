@@ -1,15 +1,26 @@
 package App;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.ArrayList;
 
 public class OpenWeather {
     private double temperature;
-    private long pressure;
-    private long humidity;
+    private double pressure;
+    private double humidity;
     private double temp_min;
     private double temp_max;
     private String city_name;
+    private static final String CITYLIST = "city.list.min.json";
+    private static ArrayList<City> cityList = new ArrayList<>();
 
 
     public String getCity_name() {
@@ -26,19 +37,19 @@ public class OpenWeather {
         return temperature;
     }
 
-    public long getPressure() {
+    public double getPressure() {
         return pressure;
     }
 
-    public void setPressure(long pressure) {
+    public void setPressure(double pressure) {
         this.pressure = pressure;
     }
 
-    public long getHumidity() {
+    public double getHumidity() {
         return humidity;
     }
 
-    public void setHumidity(long humidity) {
+    public void setHumidity(double humidity) {
         this.humidity = humidity;
     }
 
@@ -66,8 +77,42 @@ public class OpenWeather {
         temperature = temp;
     }
 
+    public static ArrayList<City> getCityList() {
+        return cityList;
+    }
+
+
+    public static void loadCities(){
+        Object ar;
+        try(FileReader in = new FileReader(CITYLIST)){
+            ar = new JSONParser().parse(in);
+            JSONArray jar = (JSONArray) ar;
+            for(int i = 0; i< jar.size(); i++){
+                JSONObject job = (JSONObject) jar.get(i);
+                JSONObject jcoord = (JSONObject) job.get("coord");
+                double lon = 0, lat = 0;
+                if(jcoord.get("lon") instanceof Long){
+                    lon = Double.valueOf((long)jcoord.get("lon"));
+                }else if(jcoord.get("lat") instanceof Long){
+                    lat = Double.valueOf((long)jcoord.get("lat"));
+                }else{
+                    lon = (double) jcoord.get("lon");
+                    lat = (double) jcoord.get("lat");
+                }
+                cityList.add(new City((long)job.get("id"), (String) job.get("name"), (String) job.get("country"), lon, lat));
+                System.out.println(i+"/"+jar.size());
+            }
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+    }
+
     public String toString(){
-        String s = getCity_name()+"\nCurrent temperature: "+getTemperature()+"\nCurrent humidity: "+getHumidity()+"\nCurrent pressure: "+getPressure()+"\nTemperatures may vary from "+getTemp_min()+" to "+getTemp_max();
+        String s = getCity_name()+"\nCurrent temperature: "+getTemperature()+"*C\nCurrent humidity: "+getHumidity()+"%\nCurrent pressure: "+getPressure()+"hPa\nTemperatures may vary from "+getTemp_min()+"*C to "+getTemp_max()+"*C";
         return s;
     }
 

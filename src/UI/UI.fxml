@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane onKeyTyped="#updateText" prefHeight="300.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="UI.UI">
+   <children>
+      <Button layoutX="417.0" layoutY="14.0" mnemonicParsing="false" onAction="#buttonSearch" text="Search" />
+      <Pane layoutX="98.0" layoutY="70.0" prefHeight="261.0" prefWidth="404.0">
+         <children>
+            <TextField fx:id="tempField" editable="false" layoutX="241.0" layoutY="14.0" />
+            <TextField fx:id="humidityField" editable="false" layoutX="241.0" layoutY="50.0" />
+            <TextField fx:id="pressureField" editable="false" layoutX="241.0" layoutY="84.0" />
+            <TextField fx:id="maxTempField" editable="false" layoutX="241.0" layoutY="118.0" />
+            <TextField fx:id="minTempField" editable="false" layoutX="241.0" layoutY="151.0" />
+            <Text layoutX="37.0" layoutY="31.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Temperature" wrappingWidth="75.13671875" />
+            <Text layoutX="37.0" layoutY="67.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Humidity" wrappingWidth="75.13671875" />
+            <Text layoutX="38.0" layoutY="101.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Pressure" />
+            <Text layoutX="38.0" layoutY="135.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Max temperature" />
+            <Text layoutX="37.0" layoutY="168.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Min temperature" />
+         </children>
+      </Pane>
+      <TextField fx:id="searchField" layoutX="226.0" layoutY="14.0" onKeyTyped="#updateText" promptText="Enter city name..." />
+   </children>
+</AnchorPane>
