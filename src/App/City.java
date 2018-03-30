@@ -7,11 +7,28 @@ public class City {
     private long ID;
     private Coords coords;
 
+
+
     public City(long ID, String name, String country, double lon, double lat) {
         this.name = name;
         this.country = country;
         this.ID = ID;
         this.coords = new Coords(lon, lat);
+    }
+    public String getName() {
+        return name;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public long getID() {
+        return ID;
+    }
+
+    public Coords getCoords() {
+        return coords;
     }
 
 

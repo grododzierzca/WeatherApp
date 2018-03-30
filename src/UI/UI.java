@@ -1,11 +1,13 @@
 package UI;
 
+import App.City;
 import App.ForecastLoader;
 import App.OpenWeather;
 import javafx.application.Application;
 import javafx.beans.Observable;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -13,12 +15,20 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import org.controlsfx.control.textfield.TextFields;
 
-public class UI extends Application {
+
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.ResourceBundle;
+
+import static org.controlsfx.control.textfield.TextFields.bindAutoCompletion;
+
+public class UI extends Application implements Initializable {
 
     private String cityName = "";
     public TextField searchField, tempField, humidityField, pressureField, maxTempField, minTempField;
-    private OpenWeather forecast;
+    private static OpenWeather forecast;
 
     public static void main(String [] args){
         launch(args);
@@ -36,7 +46,6 @@ public class UI extends Application {
     }
 
     public void updateText(){
-
     }
 
     @Override
@@ -48,8 +57,27 @@ public class UI extends Application {
         primaryStage.show();
     }
 
-    private class CityLoader implements Runnable{
-        @Override
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        CityLoader loader = new CityLoader();
+        loader.start();
+        ArrayList<String> cityNames = new ArrayList<>();
+        for(City cit: forecast.getCityList()){ ///CZY MA SENS?
+            cityNames.add(cit.getName()+", "+cit.getCountry());
+        }
+        System.out.println(cityNames);
+        TextFields.bindAutoCompletion(searchField, cityNames);
+    }
+
+
+    private static class CityLoader implements Runnable{
+        private Thread thread;
+        public void start(){
+            if(thread == null){
+                thread = new Thread(this);
+                thread.run();
+            }
+        }
         public void run() {
             forecast.loadCities();
         }

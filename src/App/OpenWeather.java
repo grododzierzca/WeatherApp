@@ -100,7 +100,7 @@ public class OpenWeather {
                     lat = (double) jcoord.get("lat");
                 }
                 cityList.add(new City((long)job.get("id"), (String) job.get("name"), (String) job.get("country"), lon, lat));
-                System.out.println(i+"/"+jar.size());
+                //System.out.println(i+"/"+jar.size()); Progress
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
