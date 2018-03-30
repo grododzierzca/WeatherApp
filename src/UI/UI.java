@@ -26,7 +26,6 @@ import static org.controlsfx.control.textfield.TextFields.bindAutoCompletion;
 
 public class UI extends Application implements Initializable {
 
-    private String cityName = "";
     public TextField searchField, tempField, humidityField, pressureField, maxTempField, minTempField;
     private static OpenWeather forecast;
 
@@ -35,17 +34,22 @@ public class UI extends Application implements Initializable {
     }
 
     public void buttonSearch(){
-        cityName = searchField.getText();
-        System.out.println(cityName);
-        forecast = ForecastLoader.fetchForecast(cityName);
+        String [] text = searchField.getText().split("ID");
+        forecast = ForecastLoader.fetchForecast(text[0]);
+        searchField.home();
         tempField.setText(String.valueOf(forecast.getTemperature())+"*C");
         humidityField.setText(String.valueOf(forecast.getHumidity())+"%");
         pressureField.setText(String.valueOf(forecast.getPressure())+"hPa");
         maxTempField.setText(String.valueOf(forecast.getTemp_max())+"*C");
         minTempField.setText(String.valueOf(forecast.getTemp_min())+"*C");
+        System.gc();
+        System.out.println("Weather updated.");
     }
 
     public void updateText(){
+    }
+    public void selectAll(){
+        searchField.selectAll();
     }
 
     @Override
@@ -55,6 +59,7 @@ public class UI extends Application implements Initializable {
         primaryStage.setTitle("WeatherApp");
         primaryStage.setScene(scene);
         primaryStage.show();
+        System.gc();
     }
 
     @Override
@@ -65,8 +70,7 @@ public class UI extends Application implements Initializable {
         for(City cit: forecast.getCityList()){ ///CZY MA SENS?
             cityNames.add(cit.getName()+", "+cit.getCountry());
         }
-        System.out.println(cityNames);
-        TextFields.bindAutoCompletion(searchField, cityNames);
+        TextFields.bindAutoCompletion(searchField, forecast.getCityList());
     }
 
 

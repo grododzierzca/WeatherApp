@@ -59,7 +59,7 @@ public class City {
         }
     }
     public String toString(){
-        return "City of "+name+", "+country+"\nHas ID: "+ID+"\nCoords are: "+coords.getLongitude()+", "+coords.getLatitude();
+        return name+", "+country+" \nID: "+ID+" \nCoords are: "+coords.getLongitude()+", "+coords.getLatitude();
     }
 
 }
